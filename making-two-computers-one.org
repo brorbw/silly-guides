@@ -1,0 +1,127 @@
+#+TITLE: MAKING TWO COMPUTERS BECOME ONE
+* Motivation
+
+Now we all know the struggle of having a desktop and a laptop going back and forth from the laptop  the desktop periphials. Boy! Do I have a story to tell you.
+
+You might be reading this thinking that you /might/ not care, that it's not that big of a deal. Trust me, I thought that I didn't care for a looong time; longer than I'd like to admit. For the last couple of weeks I have searched the web for resources on how to make my work laptop an intergrated part of my setup at home \#covid \#workfromhome. This guide is targeted at macOS and linux users but shurely there are other similar solutions out there. This /guide/ should be more of an inspirational piece and not a step-by-step guide. It should serve as a starting point helping you avoid some of the pitfalls I extracted. I personally use `arch` with gnome so your milage may vary. While arch is like *nix on hard mode sometimes, macOS offers a very easy unix experince. Enough chit chat let's get to the guide.
+
+* KVM's
+If you are not familiar with a KVM is historically a piece of hardware that allows you to switch your periphials to multiple devices allowing you to use one keyboard and mouse for more than one computer (not at once but switching between them). The shortcommings of a hardware KVM is that you have to switch to a target machine and it does not allow you to set up borders between screens like you might be used to on you muliti monitor setup. The solution to this is a virtual KVM.
+
+** Virtual KVM's
+Now there are a lot of *paid* virtual KVM's.
+- across (no linux support that i know of)
+- Synergy (29$!!!)
+
+Being a opensource pragmat I'd like to find something that I won't have to pay for. *Barrier* to the rescue. Its a fork of the Synergy codebase.
+#+BEGIN_SRC bash
+# arch official
+$ sudo pacman -S barrier
+
+# arch AUR git
+$ git clone https://aur.archlinux.org/packages/barrier-git
+$ cd barrier-git
+$ makepkg -si
+
+# macOS
+$ brew install barrier
+#+END_SRC
+
+*Note: barrier and Synergy only works with X11, it will not work if you are using wayland*
+
+Setting up the software requires one machine to be the server i.e. the one with the mouse and keyboard connected. The other machine(s) can connect to that as clients. When a client connect you assign the position of the screen of that client in relation to the servers screen. *NOTE:* client and server cannot have special characters in the name. This name can be altered in the settings on each machine.
+
+After I did this I was able to move my mouse between the two screens of my laptop and the three screens of my mac mini.
+
+It can even remap modifier-keys when switching back and forth.
+
+*** Downsides:
+You are not able to move windows between the screens, but should you need you can `X-forward` or simply ssh into the appropriate machine. For instance when I'm developing on my mac mini and I need a log output. I simply move my mouse to the linux screen and ssh into my mac and reading the log that way.
+
+* Sound? Yes, sound!
+Now I've talked about the more productive side of things, but what about fun and games? Right, allons-y. Another downside of having a more seamless intergration between two machines is that the need to consolidate the audio output might rise. Especially if you, like me like to browse reddit and watch movies at the same time. You might say that pouring three weeks sparetime into finding a low latency audio streaming protocol that works on both mac and linux a waste of time because I could just have gone out and bought a small audio mixer. Heck a couple of years back I actually built my own two channel stereo passive analog mixer. I've been down that road and since then I have aquired a pair of /BOSE QC II/. Now there are solutions that would allow me to output audio from my laptop to the soundcard connected to my mac and monitor the input of said soundcard BUT, that's the easy way.
+
+** JACK - the dead end
+
+I know that JACK and JACK2 are well removn and proven software, but it's so hard to use and the featureset is more rich than what is needed for my little setup. All I need is a virtual audio sink that sends audio over LAN. I tried many, many different solutions with JACK, including trying streaming the audio with icecast over HTTP to a browser on my mac. All solutions were finnicky and icecast is not built for capturing thus a third piece of software would be needed and it wasn't really what I was looking for.
+
+** Pulseaudio and roc-toolkit
+Pulseaudio has native support for detecting and sending audio to a pulseaudio server running on the network. Its all good and fun but the macOS support for pulseaudio is sparse and setup is weird AND its TCP which is not ideal for real time low latency scenarios. BUT... There are two developers that have made roc-toolkit. A piece of software made exactly for this my purpose they even have written a pulseaudio module.
+
+*** Installation
+#+BEGIN_SRC bash
+# arch
+
+# for Roc
+$ sudo pacman -S gcc pkgconf scons ragel gengetopt libuv libunwind libpulse sox
+
+# for 3rd-parties
+$ sudo pacman -S grep gawk libtool intltool autoconf automake make cmake
+
+# build libraries, tools, and PulseAudio modules
+$ scons -Q --enable-pulseaudio-modules --build-3rdparty=openfec,pulseaudio,cpputest
+
+# install libraries, tools, and PulseAudio modules
+$ sudo scons -Q --enable-pulseaudio-modules --build-3rdparty=openfec,pulseaudio,cpputest install
+
+# macOS
+# for Roc
+$ brew install scons ragel gengetopt cpputest
+
+# for 3rd-parties
+$ brew install libtool autoconf automake make cmake
+
+# clone repo
+$ git clone https://github.com/roc-streaming/roc-toolkit.git
+$ cd roc-toolkit
+
+# build libraries and tools
+$ scons -Q --build-3rdparty=libuv,openfec,sox
+
+# install libraries and tools
+$ sudo scons -Q --build-3rdparty=libuv,openfec,sox install
+#+END_SRC
+
+*** Setup
+Now for setup this is a little tricky'ish. Add this line to your `/etc/pulse/default.pa` in order to send sound from your linux device. The *<IP>* should be the IP on the machine that you want to connect to.
+#+BEGIN_SRC bash
+# arch
+load-module module-roc-sink remote_ip=<IP> sink_properties=device.description=<NAME>
+#+END_SRC
+And restart PulseAudio
+#+BEGIN_SRC bash
+# arch
+$ pulseaudio --kill
+$ pulseaudio --start
+#+END_SRC
+If you want to recieve sound on your linux machine you sould add this line to `/etc/pulse/default.pa` instead
+#+BEGIN_SRC bash
+load-module module-roc-sink-input sink_input_properties=media.name=<NAME>
+#+END_SRC
+And restart PulseAudio
+#+BEGIN_SRC bash
+# arch
+$ pulseaudio --kill
+$ pulseaudio --start
+#+END_SRC
+
+*** Running on macOS
+To recieve audio run
+#+BEGIN_SRC bash
+$ roc-recv -vv -s rtp+rs8m::10001 -r rs8m::10002
+#+END_SRC
+So send audio from a macOS you would need some loopback audio device like `Soundflower` or `loopback`
+#+BEGIN_SRC bash
+$ roc-send -vv -s rtp+rs8m:<ADDRESS>:10001 -r rs8m:<ADDRESS>:10002 -d coreaudio -i "Soundflower (2ch)"
+#+END_SRC
+
+You can test either combination by running
+#+BEGIN_SRC bash
+$ roc-send -vv -s rtp+rs8m:<ADDRESS>:10001 -r rs8m:<ADDRESS>:10002 -i ./file.wav
+#+END_SRC
+
+** So, sound?
+Does this really work? Yes, it's does. Does it work well? Yes, well. The only downside is that there is no way to latency compensate roc-toolkit in either direction. This can be annoying while watching netflix or similar, but I can easily live with that, or. Make up a solution, maybe smaller buffers? Anyways.
+
+* Evaluation
+This is so liberating to be able to use all the computers on my desktop as screen realestate, and having audio working between them is just a cherry on the top. I would like to be able to use hostnames for both `barrier` and `roc-streamer`
