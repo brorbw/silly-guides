@@ -59,6 +59,9 @@ $ sudo pacman -S gcc pkgconf scons ragel \
 # for 3rd-parties
 $ sudo pacman -S grep gawk libtool intltool \
 		autoconf automake make cmake
+		
+$ git clone https://github.com/roc-streaming/roc-toolkit.git
+$ cd roc-toolkit
 
 # build libraries, tools, and PulseAudio modules
 $ scons -Q --enable-pulseaudio-modules \
