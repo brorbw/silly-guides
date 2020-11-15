@@ -90,6 +90,8 @@ $ sudo scons -Q --build-3rdparty=libuv,openfec,sox install
 Now for setup this is a little tricky'ish. Add this line to your `/etc/pulse/default.pa` in order to send sound from your linux device. The *<IP>* should be the IP on the machine that you want to connect to.
 #+BEGIN_SRC bash
 # arch
+load-module module-roc-sink-input \
+		sink_input_properties=media.name=macOS
 load-module module-roc-sink remote_ip=<IP> \
 		sink_properties=device.description=<NAME>
 #+END_SRC
