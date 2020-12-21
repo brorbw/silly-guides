@@ -1,4 +1,4 @@
-#+TITLE: MAKING TWO COMPUTERS FEEL LIEK ONE (here be dragons)
+#+TITLE: MAKING TWO COMPUTERS FEEL LIKE ONE (here be dragons)
 #+SUBTITLE: A somewhat guide to use roc-toolkit, roc-streamer and barrier to intergrate two computers seamless using only software
 * Motivation
 
