@@ -37,7 +37,7 @@ For CMake
 For Make we need one more step. We need `bear`.
 
     make clean
-    bear make
+    bear -- make
 	
 Then we have the `compile_commands.json` and are ready to use them with our preferred way for code-completion. I would refrain from using `ccls` since it will just crash Emacs. I have not tried `rtags`.
 
