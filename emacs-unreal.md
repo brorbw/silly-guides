@@ -19,7 +19,7 @@ To generate those files we have to use the `GenerateProjectFiles.sh` from `/User
 The command will look something like for CMake
 
     /Users/Shared/Epic\ Games/UE_5.0EA/Engine/Build/BatchFiles/Mac/GenerateProjectFiles.sh \
-	-project="~/path/to/unreal/project/name.uproject" -game -CMakefile
+	-project="/path/to/unreal/project/name.uproject" -game -CMakefile # This should be absolute path
 
 
 Now we have a CMake file or a Makefile. While there is no issue when using either the `-CMakefile` or even `-CLion` option to generate the `CMakelists.txt` the `-Makefile` flag has some issues because silly Unreal thinks we are using Linux. In order to fix this we have to edit the `Makefile`. 
