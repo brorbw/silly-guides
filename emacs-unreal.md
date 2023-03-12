@@ -1,8 +1,6 @@
 # Emacs and Unreal Engine
 Disclamer#1: Im a snowflake and this is for the snowflakes.
 
-Disclamer#2: Im using the UE_5 preview. Some of the errors I'm reporting might be mitigated before the release.
-
 Quick preamble. I have been using my hackintosh for playing around with Unreal for a while. I like macOS and I like gamedevelopment.
 A week ago I started to get into the c++ documentation and was surprised that you as a developer are forced to use `Xcode`, `CLion` or `VSCode`. I personally find the `Xcode` ecosystem very limited in terms of customization. Having used `evil` since always (vim keybindings for emacs) `Xcode` makes it hard to navigate and I tend to avoid non-modal editing. `CLion` is a good project in my opinion but again a bit limiting. `VSCode` have some of the expandability and customization I'm looking for in an editor. Mostly avoiding the mouse as much as possible. I used `VSCode` for about a week and it would sometimes just puke errors even tough everything would build fine. Before I started using `VSCode` I tried my luck with the two guides on how to integrate Emacs in an UE development workflow. No luck.
 
@@ -18,7 +16,7 @@ To generate those files we have to use the `GenerateProjectFiles.sh` from `/User
 
 The command will look something like for CMake
 
-    /Users/Shared/Epic\ Games/UE_5.0EA/Engine/Build/BatchFiles/Mac/GenerateProjectFiles.sh \
+    /Users/Shared/Epic\ Games/UE_5.1/Engine/Build/BatchFiles/Mac/GenerateProjectFiles.sh \
 	-project="/path/to/unreal/project/name.uproject" -game -CMakefile # This should be absolute path
 
 
