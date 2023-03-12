@@ -48,7 +48,7 @@ Hope this helps.
 
 
 ## Update
-After having used this for a couple of days I have some findings. First and formost. Creating the `CMake` project makes is very easy for both `ccls` and `clangd` to find everying. However the makefile that `CMake` generate if big, very big. Thus I would reccomend using both methods. Use `CMake` to generate `comple_commands.json` then delete the `Makefile` and generate a new one with the build tool. Replace the strings with sed as shown above. This will improve your building times. Otherwise building will be painfully slow. If you want Unreal to hotload you should use the target named `<projectname>Editor`. 
+After having used this for a couple of days I have some findings. First and formost. Creating the `CMake` project makes is very easy for both `ccls` and `clangd` to find everying. However the makefile that `CMake` generate is big, very big. Thus I would reccomend using both methods. Use `CMake` to generate `comple_commands.json` then delete the `Makefile` and generate a new one with the build tool. Replace the strings with sed as shown above. This will improve your building times. Otherwise building will be painfully slow. If you want Unreal to hotload you should use the target named `<projectname>Editor`. 
 
     ninja DEMOEditor  14.21s user 6.07s system 93% cpu 21.752 total
     make HELEditor  7.81s user 2.77s system 129% cpu 8.150 total
