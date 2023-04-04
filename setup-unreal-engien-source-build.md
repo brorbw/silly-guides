@@ -19,3 +19,27 @@ xcodebuild -scheme UE5 build #takes a while
 ```
 
 5. Place projet inside the root of the `./Engine` folder. And you are good to go.
+
+# Import project
+
+There are two ways to get a project to compile with the new engine.
+
+## Open through editor
+You can convert previous projects through `Engine/Binaries/Mac/unrealEditor`.
+1. Open `Engine/Binaries/Mac/unrealEditor`
+2. Click the project you want to open in the new engine
+3. Ignore all the errors when you try to open the project.
+4. Now you can
+   1. Open with xcode and build
+   2. Generate project files and build with `xcodebuild`
+   3. Generate project files and build make or ninja (ninja fast!)
+
+## Copy project to engine source root
+If you copy your project to the same directory as `Engine` e.g. the root of the source directory.
+
+1. `cd` into the newly created project directory
+2. Generate project files including option (maybe with `--Engine` option)
+3. Now you can
+   1. Open with xcode and build
+   2. Generate project files and build with `xcodebuild`
+   3. Generate project files and build make or ninja (ninja fast!)
