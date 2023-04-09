@@ -43,3 +43,16 @@ If you copy your project to the same directory as `Engine` e.g. the root of the 
    1. Open with xcode and build
    2. Generate project files and build with `xcodebuild`
    3. Generate project files and build make or ninja (ninja fast!)
+
+# Quixel not working with source build on macOS
+
+A commit results in a segfault and should be removed
+```sh
+git show 28baa676467d1c86c03e657f043262904358e815
+```
+
+Building the source engine skips building a backend daemon for the bridge. So the following needs to be copied from a real engine release.
+```sh
+cp -r /Users/Shared/Epic Games/UE_5.2/Engine/Plugins/Bridge/ThirdParty/Mac/node-bifrost.app\
+      ~/UnrealEngine/Engine/Plugins/Bridge/ThirdParty/Mac/node-bifrost.app
+```
