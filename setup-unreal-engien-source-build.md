@@ -32,7 +32,6 @@ You can convert previous projects through `Engine/Binaries/Mac/unrealEditor`.
 4. Now you can
    1. Open with xcode and build
    2. Generate project files and build with `xcodebuild`
-   3. Generate project files and build make or ninja (ninja fast!)
 
 ## Copy project to engine source root
 If you copy your project to the same directory as `Engine` e.g. the root of the source directory.
@@ -42,7 +41,7 @@ If you copy your project to the same directory as `Engine` e.g. the root of the 
 3. Now you can
    1. Open with xcode and build
    2. Generate project files and build with `xcodebuild`
-   3. Generate project files and build make or ninja (ninja fast!)
+   3. Generate project files and build make
 
 # Quixel not working with source build on macOS
 
