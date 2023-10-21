@@ -15,7 +15,7 @@ xcodebuild -workspace UE5\ \(Mac\).xcworkspace -scheme ShaderCompileWorker build
 ```
 4. Build the engine
 ```sh
-xcodebuild -workspace UE5\ \(Mac\).xcworkspace -scheme UE5 build #takes a while
+xcodebuild -workspace UE5\ \(Mac\).xcworkspace -scheme UnrealEditor build #takes a while
 ```
 
 5. Place projet inside the root of the `./Engine` folder. And you are good to go.
