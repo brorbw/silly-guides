@@ -39,7 +39,7 @@ found
 The command will look something like for CMake
 
     /Users/Shared/Epic\ Games/UE_5.1/Engine/Build/BatchFiles/Mac/GenerateProjectFiles.sh \
-	-project="/path/to/unreal/project/name.uproject" -game -CMakefile # This should be absolute path
+	-project="$PWD/$(basename $PWD).uproject" -game -CMakefile # This should be absolute path
 
 
 Now we have a CMake file or a Makefile. While there is no issue when using
