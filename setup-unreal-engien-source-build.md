@@ -11,11 +11,19 @@ GenerateProjectFiles.sh
 3. Build the shader compiler
 The guide states that you need xcode for this but since I don't like xcode (especially because it hogs 70GB of my available 32GB ram o.O) we use commandline instead
 ```sh
+# mac
 xcodebuild -workspace UE5\ \(Mac\).xcworkspace -scheme ShaderCompileWorker build
+
+# linux
+make ShaderCompileWorker
 ```
 4. Build the engine
 ```sh
+# mac
 xcodebuild -workspace UE5\ \(Mac\).xcworkspace -scheme UnrealEditor build #takes a while
+
+# linux
+make UnrealEditor
 ```
 
 5. Place projet inside the root of the `./Engine` folder. And you are good to go.
