@@ -125,3 +125,10 @@ echo "Use the command:"
 echo "make $(basename $PWD)Editor"
 echo "to get hotloading"
 ```
+
+
+## UPDATE
+Well well well. So Epic keeps making the build process more convoluted but to get hot-loading to work with source build, especially on macOS and the make AND XCode project wont hot-load XCode. Furthermore XCode build is SO slow so we use the build script directly.
+```
+/Path/To/Engine/UnrealEngine/Engine/Build/BatchFiles/Mac/Build.sh -ForceHotReload [Target] Mac Development -Project="/Path/To/project.uproject" "Path/To/project.uproject" -IgnoreJunk
+```
