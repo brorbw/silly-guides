@@ -60,6 +60,11 @@ git show 28baa676467d1c86c03e657f043262904358e815
 
 Building the source engine skips building a backend daemon for the bridge. So the following needs to be copied from a real engine release.
 ```sh
-cp -r /Users/Shared/Epic Games/UE_5.2/Engine/Plugins/Bridge/ThirdParty/Mac/node-bifrost.app\
+cp -r /Users/Shared/Epic Games/UE_<version>/Engine/Plugins/Bridge/ThirdParty/Mac/node-bifrost.app\
       ~/UnrealEngine/Engine/Plugins/Bridge/ThirdParty/Mac/node-bifrost.app
+```
+
+If the source is built but the bridge is still not working it is probably because the signatures are wrong for the app. This can be solved by adding an certificate to the keychain `unreal-cert` (much like what is done for yabai) and run this command
+```sh
+codesign -fs 'unreal-cert' ~/UnrealEngine/Engine/Plugins/Bridge/ThirdParty/Mac/node-bifrost.app/Contents/Frameworks/*framework
 ```
