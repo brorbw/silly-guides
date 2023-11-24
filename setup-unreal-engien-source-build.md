@@ -3,6 +3,9 @@
 # Installation
 
 1. Clone the unreal engine source repo https://github.com/EpicGames/UnrealEngine
+```
+git clone --depth 1 --branch 5.3.2-release https://github.com/EpicGames/UnrealEngine.git
+```
 2. Move to the cloned location and run
 ```sh
 Setup.sh
