@@ -2,7 +2,7 @@
 Disclamer#1: Im a snowflake and this is for the snowflakes.
 
 Quick preamble. I have been using my hackintosh for playing around with Unreal
-for a while. I like macOS and I like gamedevelopment.  A week ago I started to
+for a while. I like macOS and I like game development.  A week ago I started to
 get into the c++ documentation and was surprised that you as a developer are
 forced to use `Xcode`, `CLion` or `VSCode`.  I personally find the `Xcode`
 ecosystem very limited in terms of customization. Having used `evil` since
