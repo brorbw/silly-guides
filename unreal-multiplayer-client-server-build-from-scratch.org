@@ -1,0 +1,91 @@
+#+title: Unreal Multiplayer Dedicated Server Build
+
+* Motivation
+The guides for a multiplayer setup for unreal is fragmented over multiple pages
+in their documentation with no clear path to completion for creating a
+multiplayer game to fool around in. This guide is for those of us that do not
+want to scroll through a 10 part youtube guide to find the information we need.
+
+This guide is based on the https://docs.unrealengine.com/5.3/en-US/multiplayer-programming-quick-start-for-unreal-engine/, https://docs.unrealengine.com/5.3/en-US/lyra-sample-game-in-unreal-engine and https://docs.unrealengine.com/5.3/en-US/setting-up-dedicated-servers-in-unreal-engine/
+
+The intended audience is people _not_ on windows as the can just follow along the normal guides and frankly I do not care enough.
+
+* Acquiring the unreal source code
+To build a dedicated server the source code for unreal is needed follow [[https://github.com/brorbw/silly-guides/blob/master/setup-unreal-engien-source-build.md][setup
+unreal engine source build]] to get the source code.  After obtaining and
+building according to the guide. We need to make additional build targets like
+the Lyra game. A template project does not by default come with targets for
+building a `<ProjectName>Server` and a `<ProjectName>Client` thus we will make those.
+
+** Setting up the project
+For convenience we follow the multiplayer programming quick start and create a
+`C++` project using the `ThirdPerson` template. Name the project `ThirdPersonMP`.
+
+** Default target
+The default target for the newly created project should look something like this
+#+begin_src C#
+using UnrealBuildTool;
+using System.Collections.Generic;
+
+public class ThirdPersonMPTarget : TargetRules
+{
+	public ThirdPersonMPTarget(TargetInfo Target) : base(Target)
+	{
+		Type = TargetType.Game;
+		DefaultBuildSettings = BuildSettingsVersion.V4;
+		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_3;
+		ExtraModuleNames.Add("ThirdPersonMP");
+	}
+}
+#+end_src
+
+** Shared settings
+The lyra example follows a design with shared settings that are common for all
+targets and then special settings for ~server~ and ~client~. Since we will be
+using the ~ThridPerson~ template we won't need to setup a complicated build
+target. If the need should arise for a more complicated build target please
+refer to the targets in they lyra example. It is not unlikely that it would be
+needed for an actual production game but for our purposes this is fine.
+
+** Server target
+We need to create a file called ~ThridPersonMPServer.Target.cs~ in the ~Source~
+directory of the project. Make sure that the ~Type =~ statement matches the
+filename and probably also the class name according to [[https://forums.unrealengine.com/t/error-while-trying-to-generate-vs-project-files-for-dedicated-server/413098][this link]]. Your server
+target should look something like this.
+#+begin_src C#
+using UnrealBuildTool;
+using System.Collections.Generic;
+
+[SupportedPlatforms(UnrealPlatformClass.Server)]
+public class ThirdPersonMPServerTarget : TargetRules
+{
+	public ThirdPersonMPServerTarget(TargetInfo Target) : base(Target)
+	{
+		Type = TargetType.Server;
+		DefaultBuildSettings = BuildSettingsVersion.V4;
+		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_3;
+		bool bIsDedicatedServer = true;
+		ExtraModuleNames.Add("ThirdPersonMP");
+	}
+}
+#+end_src
+
+** Client target
+Much like the server target, the client target is also it's own entity. As
+opposed to the normal or editor targets which afaict contains both server and
+client functionalities.
+#+begin_src C#
+using UnrealBuildTool;
+using System.Collections.Generic;
+
+public class ThirdPersonMPClientTarget : TargetRules
+{
+	public ThirdPersonMPClientTarget(TargetInfo Target) : base(Target)
+	{
+		Type = TargetType.Client;
+		DefaultBuildSettings = BuildSettingsVersion.V4;
+		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_3;
+		ExtraModuleNames.Add("ThirdPersonMP");
+	}
+}
+#+end_src
