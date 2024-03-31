@@ -8,8 +8,8 @@ git clone --depth 1 --branch 5.3.2-release https://github.com/EpicGames/UnrealEn
 ```
 2. Move to the cloned location and run
 ```sh
-Setup.sh
-GenerateProjectFiles.sh
+./Setup.sh
+./GenerateProjectFiles.sh
 ```
 3. Build the shader compiler
 The guide states that you need xcode for this but since I don't like xcode (especially because it hogs 70GB of my available 32GB ram o.O) we use commandline instead
