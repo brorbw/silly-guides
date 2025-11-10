@@ -56,12 +56,13 @@ If you copy your project to the same directory as `Engine` e.g. the root of the 
 
 # Quixel not working with source build on macOS
 
-A commit results in a segfault and should be removed
+A commit results in a segfault and should be removed https://github.com/EpicGames/UnrealEngine/commit/28baa676467d1c86c03e657f043262904358e815
 ```sh
 git show 28baa676467d1c86c03e657f043262904358e815
 ```
 
-Building the source engine skips building a backend daemon for the bridge. So the following needs to be copied from a real engine release.
+
+Building the source engine skips building a backend daemon for the bridge. So the following needs to be copied from a real engine release. (The current build does include)
 ```sh
 cp -r /Users/Shared/Epic Games/UE_<version>/Engine/Plugins/Bridge/ThirdParty/Mac/node-bifrost.app\
       ~/UnrealEngine/Engine/Plugins/Bridge/ThirdParty/Mac/node-bifrost.app
